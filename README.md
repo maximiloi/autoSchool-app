@@ -2,7 +2,9 @@
 
 Пет проект для автошкол
 
-Framework - Next.js (App Router)
+---
+
+Framework - Next.js
 Language - JavaScript
 Database - MongoDB
 Styling - Tailwind CSS
