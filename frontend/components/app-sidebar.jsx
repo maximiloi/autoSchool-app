@@ -1,4 +1,4 @@
-import { Car, UsersRound, UserRoundX } from 'lucide-react';
+import { Car, UsersRound, BookUser } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -45,7 +45,7 @@ const data = {
     {
       title: 'Архивные Группы',
       url: '#',
-      icon: UserRoundX,
+      icon: BookUser,
       isActive: false,
       items: [
         {
