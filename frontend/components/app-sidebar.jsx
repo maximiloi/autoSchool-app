@@ -1,4 +1,10 @@
-import { Car, UsersRound, BookUser } from 'lucide-react';
+import {
+  Car,
+  UsersRound,
+  BookUser,
+  UserRoundPlus,
+  BookPlus,
+} from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -9,6 +15,7 @@ import {
 
 import { SidebarCompanyInfo } from './sidebar-company-info';
 import { NavGroups } from './sidebar-nav-groups';
+import { NavAction } from './sidebar-nav-action';
 
 // This is sample data.
 const data = {
@@ -63,6 +70,18 @@ const data = {
       ],
     },
   ],
+  navAction: [
+    {
+      title: 'Добавить ученика',
+      url: '#',
+      icon: UserRoundPlus,
+    },
+    {
+      title: 'Добавить группу',
+      url: '#',
+      icon: BookPlus,
+    },
+  ],
 };
 
 export function AppSidebar() {
@@ -74,6 +93,8 @@ export function AppSidebar() {
       <SidebarSeparator className='my-4' />
       <SidebarContent>
         <NavGroups groups={data.groups} />
+        <SidebarSeparator className='my-4 mt-auto' />
+        <NavAction actions={data.navAction} />
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>
