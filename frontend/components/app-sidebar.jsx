@@ -1,60 +1,79 @@
+import { Car, UsersRound, UserRoundX } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
-  SidebarGroupAction,
-  SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
+  SidebarSeparator,
 } from '@/components/ui/sidebar';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@radix-ui/react-dropdown-menu';
-import { Car, ChevronUp, Plus, User2 } from 'lucide-react';
+
+import { SidebarCompanyInfo } from './sidebar-company-info';
+import { NavGroups } from './sidebar-nav-groups';
+
+// This is sample data.
+const data = {
+  user: {
+    name: 'Игорь',
+    email: 'm@example.com',
+    avatar: '/avatars/shadcn.jpg',
+  },
+  company: {
+    name: 'ООО "КАО"',
+    logo: Car,
+  },
+  groups: [
+    {
+      title: 'Активные Группы',
+      url: '#',
+      icon: UsersRound,
+      isActive: true,
+      items: [
+        {
+          title: '187',
+          url: '#',
+        },
+        {
+          title: '189',
+          url: '#',
+        },
+        {
+          title: '167',
+          url: '#',
+        },
+      ],
+    },
+    {
+      title: 'Архивные Группы',
+      url: '#',
+      icon: UserRoundX,
+      isActive: false,
+      items: [
+        {
+          title: '186',
+          url: '#',
+        },
+        {
+          title: '185',
+          url: '#',
+        },
+        {
+          title: '187',
+          url: '#',
+        },
+      ],
+    },
+  ],
+};
 
 export function AppSidebar() {
   return (
-    <Sidebar>
+    <Sidebar collapsible='icon'>
       <SidebarHeader>
-        <div className='flex gap-4 items-end'>
-          <Car className='size-8' />
-          <h2 className='font-bold'>ООО "КАО"</h2>
-        </div>
-        {/* TODO <SearchForm /> */}
+        <SidebarCompanyInfo company={data.company} />
       </SidebarHeader>
+      <SidebarSeparator className='my-4' />
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Группы</SidebarGroupLabel>
-          <SidebarGroupAction title='Добавить группу'>
-            <Plus /> <span className='sr-only'>Добавить группу</span>
-          </SidebarGroupAction>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem key={1}>
-                <SidebarMenuButton asChild>
-                  <a href='#'>1</a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem key={2}>
-                <SidebarMenuButton asChild>
-                  <a href='#'>2 вечерняя</a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem key={3}>
-                <SidebarMenuButton asChild>
-                  <a href='#'>3 выходной</a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        <NavGroups groups={data.groups} />
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>
