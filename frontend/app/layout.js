@@ -4,9 +4,9 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { Separator } from '@radix-ui/react-separator';
-
 import { AppSidebar } from '@/components/app-sidebar';
 
+import { jetBrainsMono } from './ui/fonts';
 import './globals.css';
 
 export const metadata = {
@@ -17,7 +17,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang='ru'>
-      <body>
+      <body className={`${jetBrainsMono.className} antialiased`}>
         <SidebarProvider>
           <AppSidebar />
           <main>
@@ -28,8 +28,8 @@ export default function RootLayout({ children }) {
                   <Separator orientation='vertical' className='mr-2 h-4' />
                 </div>
               </header>
+              <section className='py-4 px-4'>{children}</section>
             </SidebarInset>
-            {children}
           </main>
         </SidebarProvider>
       </body>
