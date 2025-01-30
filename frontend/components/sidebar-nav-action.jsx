@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -6,7 +7,7 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 
-export function NavAction({ actions, ...props }) {
+export default function NavAction({ actions, ...props }) {
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
@@ -14,10 +15,10 @@ export function NavAction({ actions, ...props }) {
           {actions.map((action) => (
             <SidebarMenuItem key={action.title}>
               <SidebarMenuButton asChild size='sm'>
-                <a href={action.url}>
+                <Link href={action.url}>
                   <action.icon />
                   <span>{action.title}</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
