@@ -4,7 +4,8 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { Separator } from '@radix-ui/react-separator';
-import { AppSidebar } from '@/components/app-sidebar';
+import AppSidebar from '@/components/app-sidebar';
+import AppBreadcrumb from '@/components/app-breadcrumb';
 
 import { jetBrainsMono } from './ui/fonts';
 import './globals.css';
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
                 <div className='flex items-center gap-2 px-4'>
                   <SidebarTrigger className='-ml-1' />
                   <Separator orientation='vertical' className='mr-2 h-4' />
+                  <AppBreadcrumb />
                 </div>
               </header>
               <section className='py-4 px-4'>{children}</section>

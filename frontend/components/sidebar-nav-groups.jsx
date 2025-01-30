@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import {
   Collapsible,
@@ -15,7 +16,7 @@ import {
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 
-export function NavGroups({ groups }) {
+export default function NavGroups({ groups }) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Группы</SidebarGroupLabel>
@@ -40,9 +41,9 @@ export function NavGroups({ groups }) {
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
+                        <Link href={subItem.url}>
                           <span>Группа № {subItem.title}</span>
-                        </a>
+                        </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}

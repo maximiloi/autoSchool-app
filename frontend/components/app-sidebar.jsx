@@ -13,17 +13,12 @@ import {
   SidebarSeparator,
 } from '@/components/ui/sidebar';
 
-import { SidebarCompanyInfo } from './sidebar-company-info';
-import { NavGroups } from './sidebar-nav-groups';
-import { NavAction } from './sidebar-nav-action';
+import SidebarCompanyInfo from './sidebar-company-info';
+import NavGroups from './sidebar-nav-groups';
+import NavAction from './sidebar-nav-action';
 
 // This is sample data.
 const data = {
-  user: {
-    name: 'Игорь',
-    email: 'm@example.com',
-    avatar: '/avatars/shadcn.jpg',
-  },
   company: {
     name: 'ООО "КАО"',
     logo: Car,
@@ -31,41 +26,41 @@ const data = {
   groups: [
     {
       title: 'Активные Группы',
-      url: '#',
+      url: '/',
       icon: UsersRound,
       isActive: true,
       items: [
         {
           title: '187',
-          url: '#',
+          url: '/group/',
         },
         {
           title: '189',
-          url: '#',
+          url: '/group/',
         },
         {
           title: '167',
-          url: '#',
+          url: '/group/',
         },
       ],
     },
     {
       title: 'Архивные Группы',
-      url: '#',
+      url: '/',
       icon: BookUser,
       isActive: false,
       items: [
         {
           title: '186',
-          url: '#',
+          url: '/group/',
         },
         {
           title: '185',
-          url: '#',
+          url: '/group/',
         },
         {
           title: '187',
-          url: '#',
+          url: '/group/',
         },
       ],
     },
@@ -73,18 +68,18 @@ const data = {
   navAction: [
     {
       title: 'Добавить ученика',
-      url: '#',
+      url: '/create/student/',
       icon: UserRoundPlus,
     },
     {
       title: 'Добавить группу',
-      url: '#',
+      url: '/create/group/',
       icon: BookPlus,
     },
   ],
 };
 
-export function AppSidebar() {
+export default function AppSidebar() {
   return (
     <Sidebar collapsible='icon'>
       <SidebarHeader>
