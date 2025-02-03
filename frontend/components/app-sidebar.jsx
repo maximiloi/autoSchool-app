@@ -1,10 +1,4 @@
-import {
-  Car,
-  UsersRound,
-  BookUser,
-  UserRoundPlus,
-  BookPlus,
-} from 'lucide-react';
+import { Car, UsersRound, BookUser, UserRoundPlus, BookPlus } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -81,14 +75,14 @@ const data = {
 
 export default function AppSidebar() {
   return (
-    <Sidebar collapsible='icon'>
+    <Sidebar collapsible="icon">
       <SidebarHeader>
         <SidebarCompanyInfo company={data.company} />
       </SidebarHeader>
-      <SidebarSeparator className='my-4' />
+      <SidebarSeparator className="my-4" />
       <SidebarContent>
         <NavGroups groups={data.groups} />
-        <SidebarSeparator className='my-4 mt-auto' />
+        <SidebarSeparator className="my-4 mt-auto" />
         <NavAction actions={data.navAction} />
       </SidebarContent>
       <SidebarFooter />

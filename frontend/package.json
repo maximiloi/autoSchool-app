@@ -38,6 +38,7 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev --turbopack",
+    "format": "prettier --write '**/**/*.{js,jsx,ts,tsx,css,scss}'",
     "lint": "next lint",
     "start": "next start"
   },

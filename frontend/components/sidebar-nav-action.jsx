@@ -14,7 +14,7 @@ export default function NavAction({ actions, ...props }) {
         <SidebarMenu>
           {actions.map((action) => (
             <SidebarMenuItem key={action.title}>
-              <SidebarMenuButton asChild size='sm'>
+              <SidebarMenuButton asChild size="sm">
                 <Link href={action.url}>
                   <action.icon />
                   <span>{action.title}</span>
