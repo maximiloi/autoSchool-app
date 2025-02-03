@@ -15,8 +15,8 @@ export default function AppBreadcrumb() {
     <Breadcrumb>
       <BreadcrumbList>
         {segments.map((segment, index) => (
-          <BreadcrumbItem>
-            <BreadcrumbPage key={index}>{segment}</BreadcrumbPage>
+          <BreadcrumbItem key={index}>
+            <BreadcrumbPage>{segment}</BreadcrumbPage>
           </BreadcrumbItem>
         ))}
       </BreadcrumbList>
