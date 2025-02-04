@@ -4,7 +4,7 @@ import AppSidebar from '@/components/app-sidebar';
 import AppBreadcrumb from '@/components/app-breadcrumb';
 import { Toaster } from '@/components/ui/toaster';
 
-import { jetBrainsMono } from './ui/fonts';
+import { jetBrainsMono } from '../components/fonts/fonts';
 import './globals.css';
 
 export const metadata = {
