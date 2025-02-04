@@ -67,7 +67,7 @@ export default function OrganizationForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <Section title="Основная информация">
           <InputField name="companyName" label="Название компании" control={form.control} />
           <InputField name="shortName" label="Краткое название" control={form.control} />
