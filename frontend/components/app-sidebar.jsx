@@ -16,6 +16,7 @@ const data = {
   company: {
     name: 'ООО "КАО"',
     logo: Car,
+    url: '/organization/',
   },
   groups: [
     {

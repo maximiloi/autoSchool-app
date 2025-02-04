@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function SidebarCompanyInfo({ company }) {
   return (
     <>
@@ -5,7 +7,9 @@ export default function SidebarCompanyInfo({ company }) {
         <company.logo className="size-4" />
       </div>
       <div className="text-l grid flex-1 text-left leading-tight">
-        <span className="truncate font-semibold">{company.name}</span>
+        <Link href={company.url}>
+          <span className="truncate font-semibold">{company.name}</span>
+        </Link>
       </div>
     </>
   );
