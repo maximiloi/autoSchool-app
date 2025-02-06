@@ -1,8 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
-import OrganizationForm from '@/components/forms/organization';
-import TeachersForm from '@/components/forms/teachers';
-import TeachersTable from '@/components/teachers-table';
+import OrganizationForm from './components/organization';
+import TeachersTable from './components/teachers-table';
+import TeachersForm from './components/teachers';
 
 export default function OrganizationInfo() {
   return (
