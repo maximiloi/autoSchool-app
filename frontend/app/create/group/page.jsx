@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import FormCreationTrainingGroup from '@/components/forms/creation-training-group';
+import FormCreationTrainingGroup from './components/creation-training-group';
 
 export default function CreationTrainingGroup() {
   return (
