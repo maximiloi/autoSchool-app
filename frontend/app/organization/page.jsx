@@ -6,7 +6,7 @@ import TeachersTable from '@/components/teachers-table';
 
 export default function OrganizationInfo() {
   return (
-    <div className="grid grid-cols-1 gap-4 xl:grid-cols-[2fr_1fr]">
+    <div className="grid grid-cols-1 gap-4">
       <Card>
         <CardHeader>
           <CardTitle>Реквизиты организации</CardTitle>
