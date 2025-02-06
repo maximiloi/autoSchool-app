@@ -1,11 +1,13 @@
 'use client';
 
+import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
+import { toast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
   companyName: z.string().min(2, 'Введите название компании'),
@@ -13,7 +15,7 @@ const formSchema = z.object({
   license: z.string().min(2, 'Введите номер лицензии'),
   inn: z.string().length(10, 'ИНН должен содержать 10 цифр'),
   kpp: z.string().length(9, 'КПП должен содержать 9 цифр'),
-  ogrn: z.string().length(13, 'ОГРН должен содержать 13 цифр'),
+  ogrn: z.string().length(13, 'ОГРН должен содержать 13 цифр').optional().or(z.literal('')),
   legalAddress: z.string().min(5, 'Введите юридический адрес'),
   actualAddress: z.string().min(5, 'Введите фактический адрес'),
   region: z.string().min(2, 'Введите регион'),
@@ -35,34 +37,53 @@ const formSchema = z.object({
 export default function OrganizationForm() {
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      companyName: '',
-      shortName: '',
-      license: '',
-      inn: '',
-      kpp: '',
-      ogrn: '',
-      legalAddress: '',
-      actualAddress: '',
-      region: '',
-      bank: '',
-      account: '',
-      bik: '',
-      correspondentAccount: '',
-      directorSurname: '',
-      directorName: '',
-      directorPatronymic: '',
-      accountantSurname: '',
-      accountantName: '',
-      accountantPatronymic: '',
-      phone: '',
-      email: '',
-      website: '',
-    },
+    defaultValues: {},
   });
 
-  function onSubmit(values) {
-    console.log(values);
+  useEffect(() => {
+    async function fetchCompany() {
+      try {
+        const response = await fetch('/api/company');
+        if (response.ok) {
+          const companyData = await response.json();
+          form.reset(companyData[0]);
+        }
+      } catch (error) {
+        console.error('Ошибка при загрузке данных компании', error);
+        toast({
+          duration: 2000,
+          variant: 'destructive',
+          description: 'Ошибка при загрузке данных компании',
+        });
+      }
+    }
+    fetchCompany();
+  }, [form]);
+
+  async function onSubmit(values) {
+    try {
+      const response = await fetch('/api/company', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(values),
+      });
+      if (response.ok) {
+        console.log('Данные успешно обновлены в БД');
+        toast({
+          duration: 2000,
+          description: 'Данные успешно обновлены в БД',
+        });
+      } else {
+        console.error('Ошибка при обновлении данных в БД');
+        toast({
+          duration: 2000,
+          variant: 'destructive',
+          description: 'Ошибка при обновлении данных в БД',
+        });
+      }
+    } catch (error) {
+      console.error('Ошибка запроса', error);
+    }
   }
 
   return (
@@ -80,13 +101,13 @@ export default function OrganizationForm() {
           <InputField name="ogrn" label="ОГРН" control={form.control} />
         </Section>
 
-        <Section title="Адреса">
+        <Section2 title="Адреса">
           <InputField name="legalAddress" label="Юридический адрес" control={form.control} />
           <InputField name="actualAddress" label="Фактический адрес" control={form.control} />
-          <InputField name="region" label="Регион" control={form.control} />
-        </Section>
+        </Section2>
 
         <Section title="Банковские реквизиты">
+          <InputField name="region" label="Регион" control={form.control} />
           <InputField name="bank" label="Банк" control={form.control} />
           <InputField name="account" label="Расчетный счет" control={form.control} />
           <InputField name="bik" label="БИК" control={form.control} />
@@ -116,7 +137,7 @@ export default function OrganizationForm() {
         </Section>
 
         <Button className="w-full" type="submit">
-          Ок
+          Сохранить или обновить
         </Button>
       </form>
     </Form>
@@ -127,7 +148,16 @@ function Section({ title, children }) {
   return (
     <div>
       <h3 className="mb-2 text-lg font-semibold">{title}</h3>
-      <div className="grid grid-cols-4 gap-4">{children}</div>
+      <div className="grid grid-cols-3 gap-4">{children}</div>
+    </div>
+  );
+}
+
+function Section2({ title, children }) {
+  return (
+    <div>
+      <h3 className="mb-2 text-lg font-semibold">{title}</h3>
+      <div className="grid grid-cols-2 gap-4">{children}</div>
     </div>
   );
 }
