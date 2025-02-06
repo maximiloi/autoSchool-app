@@ -8,11 +8,12 @@ Framework - Next.js
 
 Language - JavaScript
 
-Database - MongoDB
+Database - Postgres
 
 Styling - Tailwind CSS
 
 Components - Shadcn UI
 
-Formatting - Prettier
+Auth - NextAuth.js
 
+Formatting - Prettier
