@@ -42,6 +42,7 @@
     "dev": "next dev --turbopack",
     "format": "prettier --write '**/**/*.{js,jsx,ts,tsx,css,scss}'",
     "lint": "next lint",
+    "prisma": "bun x prisma studio ",
     "start": "next start"
   },
   "version": "0.1.0"
