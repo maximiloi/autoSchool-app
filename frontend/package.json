@@ -27,10 +27,12 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
+    "@eslint/eslintrc": "^3.2.0",
+    "@next/eslint-plugin-next": "^15.1.6",
     "@prisma/client": "^6.3.1",
-    "eslint": "^9",
-    "eslint-config-next": "15.1.6",
+    "eslint": "^9.19.0",
+    "eslint-config-next": "^15.1.6",
+    "eslint-config-prettier": "^10.0.1",
     "postcss": "^8",
     "prisma": "^6.3.1",
     "tailwindcss": "^3.4.1"
