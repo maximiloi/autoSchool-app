@@ -10,13 +10,14 @@ import {
 import SidebarCompanyInfo from './sidebar-company-info';
 import NavGroups from './sidebar-nav-groups';
 import NavAction from './sidebar-nav-action';
+import { User } from './sidebar-user';
 
 // This is sample data.
 const data = {
   company: {
     name: 'ООО "КАО"',
     logo: Car,
-    url: '/organization/',
+    url: '/app/organization/',
   },
   groups: [
     {
@@ -27,15 +28,15 @@ const data = {
       items: [
         {
           title: '187',
-          url: '/group/',
+          url: '/app/group/',
         },
         {
           title: '189',
-          url: '/group/',
+          url: '/app/group/',
         },
         {
           title: '167',
-          url: '/group/',
+          url: '/app/group/',
         },
       ],
     },
@@ -63,16 +64,17 @@ const data = {
   navAction: [
     {
       title: 'Добавить ученика',
-      url: '/create/student/',
+      url: '/app/create/student/',
       icon: UserRoundPlus,
     },
     {
       title: 'Добавить группу',
-      url: '/create/group/',
+      url: '/app/create/group/',
       icon: BookPlus,
     },
   ],
 };
+const user = { email: 'mail@mail.ru' };
 
 export default function AppSidebar() {
   return (
@@ -85,7 +87,9 @@ export default function AppSidebar() {
         <NavGroups groups={data.groups} />
         <SidebarSeparator className="my-4 mt-auto" />
         <NavAction actions={data.navAction} />
+        <User user={user} />
       </SidebarContent>
+
       <SidebarFooter />
     </Sidebar>
   );
