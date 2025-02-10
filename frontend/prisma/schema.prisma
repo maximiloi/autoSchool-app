@@ -14,9 +14,12 @@ datasource db {
 }
 
 model User {
-  id    String  @id @default(uuid())
-  name  String
-  email String  @unique
+  id       String  @id @default(uuid())
+  email    String  @unique
+  password String  
+  role     String  @default("user") // "admin" или "user"
+  companyId String?  // Опциональное поле для связи с компанией
+  company  Company? @relation(fields: [companyId], references: [id])  // Связь с моделью Company
 }
 
 model Company {
@@ -43,4 +46,5 @@ model Company {
   phone              String
   email              String  @unique
   website            String  @unique
+  users              User[]  // Обратная связь: одна компания может иметь много пользователей
 }
