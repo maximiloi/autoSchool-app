@@ -10,15 +10,7 @@ export default function Home() {
 
   useEffect(() => {
     if (status === 'loading') return;
-    if (session) {
-      if (session.user.role === 'ADMIN') {
-        router.push('/admin');
-      } else {
-        router.push('/app');
-      }
-    } else {
-      router.push('/login');
-    }
+    if (session) router.push('/app');
   }, [session, status, router]);
 
   if (status === 'loading') return <p>Загрузка...</p>;
