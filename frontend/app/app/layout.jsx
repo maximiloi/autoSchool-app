@@ -13,7 +13,7 @@ export const metadata = {
   description: 'Приложение для автошколы',
 };
 
-export default function RootLayout({ children }) {
+export default function AppLayout({ children }) {
   return (
     <html lang="ru">
       <body className={`${jetBrainsMono.className} antialiased`}>
