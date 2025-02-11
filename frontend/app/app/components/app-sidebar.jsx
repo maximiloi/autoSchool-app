@@ -1,3 +1,7 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { Car, UsersRound, BookUser, UserRoundPlus, BookPlus } from 'lucide-react';
 import {
   Sidebar,
@@ -10,7 +14,7 @@ import {
 import SidebarCompanyInfo from './sidebar-company-info';
 import NavGroups from './sidebar-nav-groups';
 import NavAction from './sidebar-nav-action';
-import { User } from './sidebar-user';
+import NavUser from './sidebar-nav-user';
 
 // This is sample data.
 const data = {
@@ -74,9 +78,17 @@ const data = {
     },
   ],
 };
-const user = { email: 'mail@mail.ru' };
 
 export default function AppSidebar() {
+  const [user, setUser] = useState('');
+  const session = useSession();
+
+  useEffect(() => {
+    if (session.status === 'authenticated' && session.data?.user?.email) {
+      setUser(session.data.user);
+    }
+  }, [session]);
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -87,10 +99,11 @@ export default function AppSidebar() {
         <NavGroups groups={data.groups} />
         <SidebarSeparator className="my-4 mt-auto" />
         <NavAction actions={data.navAction} />
-        <User user={user} />
       </SidebarContent>
-
-      <SidebarFooter />
+      <SidebarSeparator className="my-4" />
+      <SidebarFooter>
+        <NavUser user={user} />
+      </SidebarFooter>
     </Sidebar>
   );
 }
