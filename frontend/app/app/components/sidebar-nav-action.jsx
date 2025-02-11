@@ -6,8 +6,25 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { UserRoundPlus, BookPlus } from 'lucide-react';
 
-export default function NavAction({ actions, ...props }) {
+// This is sample data.
+const data = {
+  navAction: [
+    {
+      title: 'Добавить ученика',
+      url: '/app/create/student/',
+      icon: UserRoundPlus,
+    },
+    {
+      title: 'Добавить группу',
+      url: '/app/create/group/',
+      icon: BookPlus,
+    },
+  ],
+};
+
+export default function NavAction({ actions = data.navAction, ...props }) {
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
