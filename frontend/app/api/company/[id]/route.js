@@ -5,7 +5,11 @@ const prisma = new PrismaClient();
 
 export async function GET(req, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID компании не указан' }, { status: 400 });
+    }
 
     const company = await prisma.company.findUnique({
       where: { id },
