@@ -27,9 +27,9 @@ export async function PUT(req) {
     const data = await req.json();
 
     const updatedCompany = await prisma.company.upsert({
-      where: { inn: data.inn }, // Проверяем по ИНН
-      update: data, // Если компания есть, обновляем
-      create: data, // Если нет, создаем новую
+      where: { inn: data.inn },
+      update: data,
+      create: data,
     });
 
     return NextResponse.json(updatedCompany, { status: 200 });
