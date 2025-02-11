@@ -18,7 +18,7 @@ import {
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
-export default function NavUser({ user }) {
+export default function NavUser({ user, companyName }) {
   const { isMobile } = useSidebar();
   const router = useRouter();
 
@@ -38,7 +38,7 @@ export default function NavUser({ user }) {
             >
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{user?.email}</span>
-                <span className="truncate text-xs">{user?.email}</span>
+                <span className="truncate text-xs">{companyName}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -53,7 +53,7 @@ export default function NavUser({ user }) {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{user?.email}</span>
-                  <span className="truncate text-xs">{user?.email}</span>
+                  <span className="truncate text-xs">{companyName}</span>
                 </div>
               </div>
             </DropdownMenuLabel>

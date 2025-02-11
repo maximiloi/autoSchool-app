@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { Car, UsersRound, BookUser, UserRoundPlus, BookPlus } from 'lucide-react';
+import { UsersRound, BookUser } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -10,6 +10,7 @@ import {
   SidebarHeader,
   SidebarSeparator,
 } from '@/components/ui/sidebar';
+import { useToast } from '@/hooks/use-toast';
 
 import SidebarCompanyInfo from './sidebar-company-info';
 import NavGroups from './sidebar-nav-groups';
@@ -18,11 +19,6 @@ import NavUser from './sidebar-nav-user';
 
 // This is sample data.
 const data = {
-  company: {
-    name: 'ООО "КАО"',
-    logo: Car,
-    url: '/app/organization/',
-  },
   groups: [
     {
       title: 'Активные Группы',
@@ -65,44 +61,45 @@ const data = {
       ],
     },
   ],
-  navAction: [
-    {
-      title: 'Добавить ученика',
-      url: '/app/create/student/',
-      icon: UserRoundPlus,
-    },
-    {
-      title: 'Добавить группу',
-      url: '/app/create/group/',
-      icon: BookPlus,
-    },
-  ],
 };
 
 export default function AppSidebar() {
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState(null);
+  const [company, setCompany] = useState(null);
   const session = useSession();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (session.status === 'authenticated' && session.data?.user?.email) {
       setUser(session.data.user);
+      fetch(`/api/company/${session.data.user.companyId}`)
+        .then((res) => res.json())
+        .then((data) => setCompany(data))
+        .catch((error) => {
+          console.error('Ошибка загрузки данных компании:', error);
+          toast({
+            title: 'Ошибка',
+            description: 'Не удалось загрузить данные компании.',
+            status: 'error',
+          });
+        });
     }
   }, [session]);
 
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <SidebarCompanyInfo company={data.company} />
+        <SidebarCompanyInfo name={company ? company.shortName : null} />
       </SidebarHeader>
       <SidebarSeparator className="my-4" />
       <SidebarContent>
         <NavGroups groups={data.groups} />
         <SidebarSeparator className="my-4 mt-auto" />
-        <NavAction actions={data.navAction} />
+        <NavAction />
       </SidebarContent>
       <SidebarSeparator className="my-4" />
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser user={user} companyName={company ? company.shortName : null} />
       </SidebarFooter>
     </Sidebar>
   );

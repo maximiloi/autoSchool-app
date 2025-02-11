@@ -1,14 +1,15 @@
+import { Car } from 'lucide-react';
 import Link from 'next/link';
 
-export default function SidebarCompanyInfo({ company }) {
+export default function SidebarCompanyInfo({ name }) {
   return (
     <>
       <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-        <company.logo className="size-4" />
+        <Car className="size-4" />
       </div>
       <div className="text-l grid flex-1 text-left leading-tight">
         <span className="truncate font-semibold">
-          <Link href={company.url}>{company.name}</Link>
+          <Link href="/app/organization/">{name}</Link>
         </span>
       </div>
     </>
