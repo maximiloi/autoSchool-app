@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { z } from 'zod';
@@ -35,6 +36,7 @@ const formSchema = z.object({
 });
 
 export default function OrganizationForm() {
+  const { data: session } = useSession();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {},
@@ -42,11 +44,12 @@ export default function OrganizationForm() {
 
   useEffect(() => {
     async function fetchCompany() {
+      if (!session?.user?.companyId) return;
       try {
-        const response = await fetch('/api/company');
+        const response = await fetch(`/api/company/${session.user.companyId}`);
         if (response.ok) {
           const companyData = await response.json();
-          form.reset(companyData[0]);
+          form.reset(companyData);
         }
       } catch (error) {
         console.error('Ошибка при загрузке данных компании', error);
@@ -58,7 +61,7 @@ export default function OrganizationForm() {
       }
     }
     fetchCompany();
-  }, [form]);
+  }, [session, form]);
 
   async function onSubmit(values) {
     try {
