@@ -1,22 +1,23 @@
 import { Toaster } from '@/components/ui/toaster';
 import Providers from './providers';
 
+import { jetBrainsMono } from '../components/fonts/fonts';
 import './globals.css';
 
 export const metadata = {
-  title: 'Автошкола',
+  title: 'АвтошколаApp',
   description: 'Приложение для автошколы',
 };
 
 export default function RootLayout({ children, session }) {
   return (
-    <html lang="ru">
-      <body>
-        <Providers session={session}>
+    <Providers session={session}>
+      <html lang="ru">
+        <body className={`${jetBrainsMono.className} antialiased`}>
           {children}
           <Toaster />
-        </Providers>
-      </body>
-    </html>
+        </body>
+      </html>
+    </Providers>
   );
 }
