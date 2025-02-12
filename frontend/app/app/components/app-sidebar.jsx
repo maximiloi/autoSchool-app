@@ -63,6 +63,10 @@ const data = {
   ],
 };
 
+const mockCompanyData = {
+  shortName: 'Добавить компанию',
+};
+
 export default function AppSidebar() {
   const [user, setUser] = useState(null);
   const [company, setCompany] = useState(null);
@@ -72,17 +76,22 @@ export default function AppSidebar() {
   useEffect(() => {
     if (session.status === 'authenticated' && session.data?.user?.email) {
       setUser(session.data.user);
-      fetch(`/api/company/${session.data.user.companyId}`)
-        .then((res) => res.json())
-        .then((data) => setCompany(data))
-        .catch((error) => {
-          console.error('Ошибка загрузки данных компании:', error);
-          toast({
-            title: 'Ошибка',
-            description: 'Не удалось загрузить данные компании.',
-            status: 'error',
+
+      if (session.data.user.companyId === null) {
+        setCompany(mockCompanyData);
+      } else {
+        fetch(`/api/company/${session.data.user.companyId}`)
+          .then((res) => res.json())
+          .then((data) => setCompany(data))
+          .catch((error) => {
+            console.error('Ошибка загрузки данных компании:', error);
+            toast({
+              title: 'Ошибка',
+              description: 'Не удалось загрузить данные компании.',
+              status: 'error',
+            });
           });
-        });
+      }
     }
   }, [session]);
 
