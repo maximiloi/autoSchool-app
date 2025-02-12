@@ -20,7 +20,8 @@ model User {
   role      String    @default("user") // "admin" или "user"
   companyId String?
   company   Company?  @relation(fields: [companyId], references: [id])
-  teachers  Teacher[] @relation("TeacherCreatedBy") // Связь с преподавателями
+
+  createdAt      DateTime @default(now())
 }
 
 model Company {
@@ -48,7 +49,8 @@ model Company {
   email                String    @unique
   website              String?
   users                User[]
-  teachers             Teacher[] // Добавляем связь с преподавателями
+  teachers             Teacher[]
+  cars            Car[]
 }
 
 model Teacher {
@@ -67,5 +69,19 @@ model Teacher {
   companyId        String
   createdBy        String
   company          Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  creator          User    @relation(fields: [createdBy], references: [id], onDelete: SetNull, name: "TeacherCreatedBy")
+  cars            Car[]
+}
+
+model Car {
+  id             String  @id @default(uuid())
+  carModel       String
+  carNumber      String
+  literalMarking String
+  teacherId      String
+  companyId      String 
+  teacher        Teacher? @relation(fields: [teacherId], references: [id], onDelete: SetNull)
+  company        Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
