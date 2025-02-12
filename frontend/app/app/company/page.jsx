@@ -6,9 +6,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import CompanyForm from './components/company';
-import TeachersTable from './components/teachers-table';
-import TeachersForm from './components/teachers';
+import CompanyForm from './tabs/company';
+import TeachersTable from './tabs/teachers-table';
+import TeachersForm from './tabs/teachers';
 
 export default function companyInfo() {
   return (
