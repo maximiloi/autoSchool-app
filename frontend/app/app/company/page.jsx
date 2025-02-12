@@ -9,6 +9,8 @@ import {
 import CompanyForm from './tabs/company';
 import TeachersTable from './tabs/teachers-table';
 import TeachersForm from './tabs/teachers';
+import CarTable from './tabs/car-table';
+import CarForm from './tabs/car';
 
 export default function companyInfo() {
   return (
@@ -49,15 +51,15 @@ export default function companyInfo() {
       <TabsContent value="auto">
         <Card>
           <CardHeader>
-            <CardTitle>Преподаватели организации</CardTitle>
+            <CardTitle>Автомобили организации</CardTitle>
           </CardHeader>
           <CardContent>
-            <TeachersTable />
+            <CarTable />
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="item-1">
                 <AccordionTrigger>Добавить или редактировать автомобили</AccordionTrigger>
                 <AccordionContent>
-                  <TeachersForm />
+                  <CarForm />
                 </AccordionContent>
               </AccordionItem>
             </Accordion>

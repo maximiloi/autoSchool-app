@@ -20,7 +20,7 @@ export default function TeachersTable() {
   useEffect(() => {
     async function fetchTeachers() {
       try {
-        const response = await fetch('/api/teachers');
+        const response = await fetch('/api/teacher');
         if (!response.ok) throw new Error('Ошибка загрузки преподавателей');
         const data = await response.json();
         setTeachers(data);
@@ -50,7 +50,7 @@ export default function TeachersTable() {
   return (
     <>
       <div className="grid grid-cols-2 gap-8">
-        <h2 className="mb-4 text-lg font-semibold">📋 Список преподавателей и мастеров</h2>
+        <h2 className="mb-4 text-lg font-semibold">👨‍🏭 Список преподавателей и мастеров</h2>
         <Button onClick={handleSort} className="mb-4">
           Сортировать по виду деятельности ({sortOrder === 'asc' ? '▲' : '▼'})
         </Button>

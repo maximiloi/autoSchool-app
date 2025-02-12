@@ -3,12 +3,12 @@
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Form } from '@/components/ui/form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
+import InputField from '@/components/ui/InputField';
 
 const formSchema = z.object({
   companyName: z.string().min(2, 'Введите название компании'),
@@ -186,22 +186,5 @@ function Section2({ title, children }) {
       <h3 className="mb-2 text-lg font-semibold">{title}</h3>
       <div className="grid grid-cols-2 gap-4">{children}</div>
     </div>
-  );
-}
-
-function InputField({ name, label, control }) {
-  return (
-    <FormField
-      name={name}
-      control={control}
-      render={({ field }) => (
-        <FormItem>
-          <FormControl>
-            <Input placeholder={label} {...field} />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
   );
 }

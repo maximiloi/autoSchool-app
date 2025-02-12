@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from '@/hooks/use-toast';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -22,6 +21,7 @@ import {
   FormControl,
   FormMessage,
 } from '@/components/ui/form';
+import InputField from '@/components/ui/InputField';
 
 const formSchema = z.object({
   lastName: z.string().min(2, 'Введите фамилию'),
@@ -90,7 +90,7 @@ export default function TeachersForm() {
   return (
     <>
       <h2 className="mb-4 mt-6 text-lg font-semibold">
-        📋 Редактировать преподавателей и мастеров
+        ✏️ Редактировать преподавателей и мастеров
       </h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -153,22 +153,5 @@ export default function TeachersForm() {
         </form>
       </Form>
     </>
-  );
-}
-
-function InputField({ name, label, control }) {
-  return (
-    <FormField
-      name={name}
-      control={control}
-      render={({ field }) => (
-        <FormItem>
-          <FormControl>
-            <Input placeholder={label} {...field} />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
   );
 }
