@@ -18,7 +18,6 @@ export const authOptions = {
           where: { email: credentials.email },
           include: { company: true }, // Загружаем данные о компании
         });
-        console.log('🚀 ~ authorize ~ user:', user);
 
         if (!user) throw new Error('Пользователь не найден');
 
