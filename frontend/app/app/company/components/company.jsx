@@ -18,7 +18,7 @@ const formSchema = z.object({
   kpp: z.string().length(9, 'КПП должен содержать 9 цифр'),
   ogrn: z.string().length(13, 'ОГРН должен содержать 13 цифр').optional().or(z.literal('')),
   legalAddress: z.string().min(5, 'Введите юридический адрес'),
-  actualAddress: z.string().min(5, 'Введите фактический адрес'),
+  actualAddress: z.string().min(5, 'Введите фактический адрес').optional(),
   region: z.string().min(2, 'Введите регион'),
   bank: z.string().min(2, 'Введите название банка'),
   account: z.string().length(20, 'Расчетный счет должен содержать 20 цифр'),
@@ -26,13 +26,13 @@ const formSchema = z.object({
   correspondentAccount: z.string().length(20, 'Корр. счет должен содержать 20 цифр'),
   directorSurname: z.string().min(2, 'Введите фамилию директора'),
   directorName: z.string().min(2, 'Введите имя директора'),
-  directorPatronymic: z.string().min(2, 'Введите отчество директора'),
-  accountantSurname: z.string().min(2, 'Введите фамилию бухгалтера'),
-  accountantName: z.string().min(2, 'Введите имя бухгалтера'),
-  accountantPatronymic: z.string().min(2, 'Введите отчество бухгалтера'),
+  directorPatronymic: z.string().min(2, 'Введите отчество директора').optional(),
+  accountantSurname: z.string().min(2, 'Введите фамилию бухгалтера').optional(),
+  accountantName: z.string().min(2, 'Введите имя бухгалтера').optional(),
+  accountantPatronymic: z.string().min(2, 'Введите отчество бухгалтера').optional(),
   phone: z.string().min(10, 'Введите телефон'),
   email: z.string().email('Введите корректный email'),
-  website: z.string().url('Введите корректный URL'),
+  website: z.string().url('Введите корректный URL').optional(),
 });
 
 export default function CompanyForm() {

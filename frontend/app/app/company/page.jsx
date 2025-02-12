@@ -1,5 +1,11 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import CompanyForm from './components/company';
 import TeachersTable from './components/teachers-table';
 import TeachersForm from './components/teachers';
@@ -29,7 +35,14 @@ export default function companyInfo() {
           </CardHeader>
           <CardContent>
             <TeachersTable />
-            <TeachersForm />
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="item-1">
+                <AccordionTrigger>Добавить или редактировать преподавателя</AccordionTrigger>
+                <AccordionContent>
+                  <TeachersForm />
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </CardContent>
         </Card>
       </TabsContent>
@@ -40,7 +53,14 @@ export default function companyInfo() {
           </CardHeader>
           <CardContent>
             <TeachersTable />
-            <TeachersForm />
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="item-1">
+                <AccordionTrigger>Добавить или редактировать автомобили</AccordionTrigger>
+                <AccordionContent>
+                  <TeachersForm />
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </CardContent>
         </Card>
       </TabsContent>
