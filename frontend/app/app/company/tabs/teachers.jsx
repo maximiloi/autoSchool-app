@@ -60,7 +60,7 @@ export default function TeachersForm() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/teachers', {
+      const response = await fetch('/api/teacher', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

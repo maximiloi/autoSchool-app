@@ -39,7 +39,7 @@ export default function CarForm() {
   useEffect(() => {
     async function fetchTeachers() {
       try {
-        const response = await fetch('/api/teachers');
+        const response = await fetch('/api/teacher');
         if (!response.ok) throw new Error('Ошибка загрузки преподавателей');
         const data = await response.json();
 
