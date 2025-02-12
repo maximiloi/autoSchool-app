@@ -35,7 +35,7 @@ const formSchema = z.object({
   website: z.string().url('Введите корректный URL'),
 });
 
-export default function OrganizationForm() {
+export default function CompanyForm() {
   const { data: session } = useSession();
   const form = useForm({
     resolver: zodResolver(formSchema),

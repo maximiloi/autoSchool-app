@@ -1,4 +1,4 @@
-export const organization = {
+export const company = {
   companyName: 'ООО «Компания АВТО ОНЛАЙН»',
   shortName: 'ООО «КАО»',
   license: 'Л035-01280-53/00387435',

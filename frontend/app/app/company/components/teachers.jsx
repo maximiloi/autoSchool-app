@@ -31,12 +31,12 @@ const formSchema = z.object({
   middleName: z.string().optional(),
   activityType: z.enum(['theory', 'practice'], { required_error: 'Выберите вид деятельности' }),
   birthDate: z.date().optional(),
-  birthPlace: z.string().min(2, 'Введите место рождения'),
-  address: z.string().min(2, 'Введите адрес'),
+  birthPlace: z.string().min(2, 'Введите место рождения').optional(),
+  address: z.string().min(2, 'Введите адрес').optional(),
   licenseSeries: z.string().optional(),
   licenseNumber: z.string().optional(),
   licenseIssueDate: z.date().optional(),
-  snils: z.string().length(11, 'Введите корректный СНИЛС'),
+  snils: z.string().length(11, 'Введите корректный СНИЛС').optional(),
 });
 
 export default function TeachersForm() {

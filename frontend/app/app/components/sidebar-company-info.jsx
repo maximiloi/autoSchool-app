@@ -9,7 +9,7 @@ export default function SidebarCompanyInfo({ name }) {
       </div>
       <div className="text-l grid flex-1 text-left leading-tight">
         <span className="truncate font-semibold">
-          <Link href="/app/organization/">{name}</Link>
+          <Link href="/app/company/">{name}</Link>
         </span>
       </div>
     </>
