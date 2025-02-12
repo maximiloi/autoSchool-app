@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from '@/hooks/use-toast';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,10 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
-import { Calendar } from '@/components/ui/calendar';
-import { format } from 'date-fns';
-import { ru } from 'date-fns/locale';
 import {
   Form,
   FormField,
@@ -30,16 +28,17 @@ const formSchema = z.object({
   firstName: z.string().min(2, 'Введите имя'),
   middleName: z.string().optional(),
   activityType: z.enum(['theory', 'practice'], { required_error: 'Выберите вид деятельности' }),
-  birthDate: z.date().optional(),
-  birthPlace: z.string().min(2, 'Введите место рождения').optional(),
-  address: z.string().min(2, 'Введите адрес').optional(),
+  birthDate: z.string().optional(),
+  birthPlace: z.string().optional(),
+  address: z.string().optional(),
   licenseSeries: z.string().optional(),
   licenseNumber: z.string().optional(),
-  licenseIssueDate: z.date().optional(),
-  snils: z.string().length(11, 'Введите корректный СНИЛС').optional(),
+  licenseIssueDate: z.string().optional(),
+  snils: z.string().optional(),
 });
 
 export default function TeachersForm() {
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -47,18 +46,45 @@ export default function TeachersForm() {
       firstName: '',
       middleName: '',
       activityType: 'theory',
-      birthDate: null,
+      birthDate: '',
       birthPlace: '',
       address: '',
       licenseSeries: '',
       licenseNumber: '',
-      licenseIssueDate: null,
+      licenseIssueDate: '',
       snils: '',
     },
   });
 
-  function onSubmit(values) {
-    console.log(values);
+  async function onSubmit(values) {
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('/api/teachers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
+
+      if (response.ok) {
+        toast({
+          duration: 2000,
+          description: 'Преподаватель успешно добавлен в БД',
+        });
+      } else {
+        toast({
+          duration: 2000,
+          variant: 'destructive',
+          description: 'Ошибка при создании преподавателя',
+        });
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -68,10 +94,15 @@ export default function TeachersForm() {
       </h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-4 gap-4">
             <InputField name="lastName" label="Фамилия" control={form.control} />
             <InputField name="firstName" label="Имя" control={form.control} />
             <InputField name="middleName" label="Отчество" control={form.control} />
+            <InputField
+              name="birthDate"
+              label="Дата рождения (ДД.ММ.ГГГГ)"
+              control={form.control}
+            />
           </div>
 
           <FormField
@@ -96,26 +127,28 @@ export default function TeachersForm() {
             )}
           />
 
-          <DatePicker name="birthDate" label="Дата рождения" control={form.control} />
           <InputField name="birthPlace" label="Место рождения" control={form.control} />
           <InputField name="address" label="Адрес" control={form.control} />
 
           <h3 className="text-md font-semibold">Водительское удостоверение</h3>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-4 gap-4">
             <InputField name="licenseSeries" label="Серия" control={form.control} />
             <InputField name="licenseNumber" label="Номер" control={form.control} />
-            <DatePicker name="licenseIssueDate" label="Дата выдачи" control={form.control} />
+            <InputField
+              name="licenseIssueDate"
+              label="Дата выдачи (ДД.ММ.ГГГГ)"
+              control={form.control}
+            />
+            <InputField name="snils" label="СНИЛС" control={form.control} />
           </div>
-          <InputField name="snils" label="СНИЛС" control={form.control} />
 
           <div className="flex gap-4">
-            <Button type="button" variant="outline">
-              Добавить
-            </Button>
             <Button type="button" variant="destructive">
               Удалить
             </Button>
-            <Button type="submit">OK</Button>
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? 'Создание...' : 'Создать'}
+            </Button>
           </div>
         </form>
       </Form>
@@ -133,38 +166,6 @@ function InputField({ name, label, control }) {
           <FormControl>
             <Input placeholder={label} {...field} />
           </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
-}
-
-function DatePicker({ name, label, control }) {
-  return (
-    <FormField
-      name={name}
-      control={control}
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel className="mr-4">{label}</FormLabel>
-          <Popover>
-            <PopoverTrigger asChild>
-              <FormControl>
-                <Button variant={'outline'}>
-                  {field.value ? format(field.value, 'PPP', { locale: ru }) : 'Выберите дату'}
-                </Button>
-              </FormControl>
-            </PopoverTrigger>
-            <PopoverContent>
-              <Calendar
-                locale={ru}
-                mode="single"
-                selected={field.value}
-                onSelect={field.onChange}
-              />
-            </PopoverContent>
-          </Popover>
           <FormMessage />
         </FormItem>
       )}

@@ -14,55 +14,58 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid())
-  email    String  @unique
-  password String  
-  role     String  @default("user") // "admin" или "user"
-  companyId String?  
-  company  Company? @relation(fields: [companyId], references: [id])  
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  role      String    @default("user") // "admin" или "user"
+  companyId String?
+  company   Company?  @relation(fields: [companyId], references: [id])
+  teachers  Teacher[] @relation("TeacherCreatedBy") // Связь с преподавателями
 }
 
 model Company {
-  id                   String  @id @default(uuid())
+  id                   String    @id @default(uuid())
   companyName          String
   shortName            String
   license              String
-  inn                 String  @unique
-  kpp                 String
-  ogrn                String?
-  legalAddress        String
-  actualAddress       String
-  region              String
-  bank               String
-  account            String
-  bik                String
-  correspondentAccount String
-  directorSurname    String
-  directorName       String
-  directorPatronymic String
-  accountantSurname  String
-  accountantName     String
-  accountantPatronymic String
-  phone              String
-  email              String  @unique
-  website            String  @unique
-  users              User[]
-  teachers           Teacher[] // Добавляем связь с преподавателями
+  inn                  String    @unique @db.Char(10) // 10 символов
+  kpp                  String    @db.Char(9) // 9 символов
+  ogrn                 String?   @db.Char(13) // 13 символов, опционально
+  legalAddress         String
+  actualAddress        String?
+  region               String
+  bank                 String
+  account              String    @db.Char(20) // 20 символов
+  bik                  String    @db.Char(9) // 9 символов
+  correspondentAccount String    @db.Char(20) // 20 символов
+  directorSurname      String
+  directorName         String
+  directorPatronymic   String?
+  accountantSurname    String?
+  accountantName       String?
+  accountantPatronymic String?
+  phone                String
+  email                String    @unique
+  website              String?
+  users                User[]
+  teachers             Teacher[] // Добавляем связь с преподавателями
 }
 
 model Teacher {
-  id              String  @id @default(uuid())
-  lastName        String
-  firstName       String
-  middleName      String?
-  activityType    String  @default("theory") // "theory" или "practice"
-  birthDate       DateTime?
-  birthPlace      String
-  address         String
-  licenseSeries   String?
-  licenseNumber   String?
-  licenseIssueDate DateTime?
-  snils          String  @unique
-  companyId       String  
-  company        Company @relation(fields: [companyId], references: [id]) // Привязка к компании
+  id               String  @id @default(uuid())
+  lastName         String
+  firstName        String
+  middleName       String?
+  activityType     String  @default("theory") // "theory" или "practice"
+  birthDate        String?
+  birthPlace       String?
+  address          String?
+  licenseSeries    String?
+  licenseNumber    String?
+  licenseIssueDate String?
+  snils            String?
+  companyId        String
+  createdBy        String
+  company          Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  creator          User    @relation(fields: [createdBy], references: [id], onDelete: SetNull, name: "TeacherCreatedBy")
 }
