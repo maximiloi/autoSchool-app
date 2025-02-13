@@ -9,7 +9,7 @@ export default function InputField({ name, label, control }) {
       render={({ field }) => (
         <FormItem>
           <FormControl>
-            <Input placeholder={label} {...field} />
+            <Input placeholder={label} {...field} defaultValue="" />
           </FormControl>
           <FormMessage />
         </FormItem>

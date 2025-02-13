@@ -48,7 +48,7 @@ export default function CarTable() {
   }
   if (loading) return <p>Загрузка...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
-  if (cars.length === 0) return <p>Добавь преподавателя</p>;
+  if (cars.length === 0) return <p>Добавьте автомобиль</p>;
 
   return (
     <>

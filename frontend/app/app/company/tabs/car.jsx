@@ -26,7 +26,7 @@ const formSchema = z.object({
 export default function CarForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [teachers, setTeachers] = useState([]);
-  const form = useForm({
+  const { reset, ...form } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       carModel: '',
@@ -70,6 +70,7 @@ export default function CarForm() {
           duration: 2000,
           description: 'Автомобиль успешно добавлен в БД',
         });
+        reset();
       } else {
         toast({
           duration: 2000,
@@ -110,7 +111,7 @@ export default function CarForm() {
           </div>
 
           <div className="flex gap-4">
-            <Button type="button" variant="destructive">
+            <Button type="button" variant="destructive" disabled={isLoading}>
               Удалить
             </Button>
             <Button type="submit" disabled={isLoading}>

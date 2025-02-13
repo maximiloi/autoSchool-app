@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from '@/hooks/use-toast';
@@ -39,7 +40,8 @@ const formSchema = z.object({
 
 export default function TeachersForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const form = useForm({
+  const router = useRouter();
+  const { reset, ...form } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       lastName: '',
@@ -73,6 +75,8 @@ export default function TeachersForm() {
           duration: 2000,
           description: 'Преподаватель успешно добавлен в БД',
         });
+        reset();
+        router.refresh();
       } else {
         toast({
           duration: 2000,
@@ -81,7 +85,11 @@ export default function TeachersForm() {
         });
       }
     } catch (err) {
-      setError(err.message);
+      toast({
+        duration: 2000,
+        variant: 'destructive',
+        description: `Ошибка: ${err.message}`,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -111,7 +119,7 @@ export default function TeachersForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Вид деятельности</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={field.onChange} value={field.value ?? ''}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Выберите" />
@@ -143,7 +151,7 @@ export default function TeachersForm() {
           </div>
 
           <div className="flex gap-4">
-            <Button type="button" variant="destructive">
+            <Button type="button" variant="destructive" disabled={isLoading}>
               Удалить
             </Button>
             <Button type="submit" disabled={isLoading}>
