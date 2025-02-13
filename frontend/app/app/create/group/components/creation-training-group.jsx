@@ -29,28 +29,43 @@ import {
 } from '@/components/ui/select';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useSession } from 'next-auth/react';
 
 const formSchema = z.object({
   groupNumber: z.string().min(1, 'Введите номер группы').regex(/^\d+$/, 'Только цифры'),
   category: z.enum(['A', 'B'], { required_error: 'Выберите категорию' }),
   startTrainingDate: z.date({ required_error: 'Укажите дату начала' }),
   endTrainingDate: z.date({ required_error: 'Укажите дату окончания' }),
-  theoryTeacher: z.array(z.string()).nonempty('Выберите хотя бы одного преподавателя'),
-  practiceTeacher: z.array(z.string()).nonempty('Выберите хотя бы одного преподавателя'),
+  theoryTeachers: z
+    .array(
+      z.object({
+        id: z.string().uuid('Неверный формат id преподавателя'),
+      }),
+    )
+    .nonempty('Выберите хотя бы одного преподавателя'),
+  practiceTeachers: z
+    .array(
+      z.object({
+        id: z.string().uuid('Неверный формат id преподавателя'),
+      }),
+    )
+    .nonempty('Выберите хотя бы одного преподавателя'),
 });
 
 export default function FormCreationTrainingGroup() {
+  const [isLoading, setIsLoading] = useState(false);
   const [teachers, setTeachers] = useState([]);
+  const { data: session, status } = useSession();
   const { toast } = useToast();
-  const form = useForm({
+  const { reset, ...form } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       groupNumber: '',
       category: 'B',
       startTrainingDate: null,
       endTrainingDate: null,
-      theoryTeacher: [],
-      practiceTeacher: [],
+      theoryTeachers: [],
+      practiceTeachers: [],
     },
   });
 
@@ -58,7 +73,13 @@ export default function FormCreationTrainingGroup() {
     async function fetchTeachers() {
       try {
         const response = await fetch('/api/teacher');
-        if (!response.ok) throw new Error('Ошибка загрузки преподавателей');
+        if (!response.ok) {
+          toast({
+            variant: 'destructive',
+            description: 'Ошибка загрузки преподавателей.',
+          });
+          throw new Error('Ошибка загрузки преподавателей');
+        }
         const data = await response.json();
 
         setTeachers(data);
@@ -70,12 +91,51 @@ export default function FormCreationTrainingGroup() {
     fetchTeachers();
   }, []);
 
-  function onSubmit(values) {
+  async function onSubmit(values) {
     if (values.endTrainingDate < values.startTrainingDate) {
       toast({ variant: 'destructive', description: 'Дата окончания не может быть раньше начала.' });
       return;
     }
-    console.log(values);
+
+    if (status === 'authenticated') {
+      setIsLoading(true);
+      try {
+        const requestData = {
+          ...values,
+          companyId: session.user.companyId,
+        };
+
+        const response = await fetch('/api/group', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestData),
+        });
+
+        if (response.ok) {
+          toast({
+            duration: 2000,
+            description: 'Группа успешно добавлен в БД',
+          });
+          reset();
+        } else {
+          toast({
+            duration: 2000,
+            variant: 'destructive',
+            description: 'Ошибка при создании группы',
+          });
+        }
+      } catch (err) {
+        toast({
+          duration: 2000,
+          variant: 'destructive',
+          description: `Ошибка: ${err.message}`,
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
   }
 
   return (
@@ -118,7 +178,6 @@ export default function FormCreationTrainingGroup() {
             )}
           />
         </div>
-
         <div className="grid grid-cols-2 gap-4">
           {['startTrainingDate', 'endTrainingDate'].map((name, index) => (
             <FormField
@@ -166,9 +225,9 @@ export default function FormCreationTrainingGroup() {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          {['theoryTeacher', 'practiceTeacher'].map((name, index) => {
+          {['theoryTeachers', 'practiceTeachers'].map((name, index) => {
             const filteredTeachers = teachers.filter((teacher) =>
-              name === 'theoryTeacher'
+              name === 'theoryTeachers'
                 ? teacher.activityType === 'theory'
                 : teacher.activityType === 'practice',
             );
@@ -190,13 +249,13 @@ export default function FormCreationTrainingGroup() {
                           className="flex cursor-pointer items-center space-x-2"
                         >
                           <Checkbox
-                            checked={field.value.includes(teacher.id)}
+                            checked={(field.value ?? []).some((item) => item.id === teacher.id)}
                             onCheckedChange={(checked) => {
                               form.setValue(
                                 name,
                                 checked
-                                  ? [...field.value, teacher.id]
-                                  : field.value.filter((id) => id !== teacher.id),
+                                  ? [...(field.value ?? []), { id: teacher.id }]
+                                  : (field.value ?? []).filter((item) => item.id !== teacher.id),
                               );
                             }}
                           />
@@ -212,8 +271,8 @@ export default function FormCreationTrainingGroup() {
           })}
         </div>
 
-        <Button type="submit" className="w-full">
-          Создать группу
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? 'Создание...' : 'Создать группу'}
         </Button>
       </form>
     </Form>

@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -50,7 +44,8 @@ model Company {
   website              String?
   users                User[]
   teachers             Teacher[]
-  cars            Car[]
+  cars                 Car[]
+  groups               Group[] 
 }
 
 model Teacher {
@@ -69,6 +64,10 @@ model Teacher {
   companyId        String
   createdBy        String
   company          Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  theoryGroups   Group[] @relation(name: "TheoryTeachers")
+  practiceGroups Group[] @relation(name: "PracticeTeachers")
+
   cars            Car[]
 }
 
@@ -83,5 +82,20 @@ model Car {
   company        Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+}
+
+model Group {
+  id                String   @id @default(uuid())
+  groupNumber       String
+  category          String
+  startTrainingDate DateTime
+  endTrainingDate   DateTime
+  isActive          Boolean  @default(true)
+  companyId        String
+  company          Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  theoryTeachers   Teacher[] @relation(name: "TheoryTeachers")
+  practiceTeachers Teacher[] @relation(name: "PracticeTeachers")
+
+  createdAt        DateTime  @default(now())
 }
