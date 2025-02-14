@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
-import { UsersRound, BookUser } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -17,98 +16,65 @@ import NavGroups from './sidebar-nav-groups';
 import NavAction from './sidebar-nav-action';
 import NavUser from './sidebar-nav-user';
 
-// This is sample data.
-const data = {
-  groups: [
-    {
-      title: 'Активные Группы',
-      url: '/',
-      icon: UsersRound,
-      isActive: true,
-      items: [
-        {
-          title: '187',
-          url: '/app/group/',
-        },
-        {
-          title: '189',
-          url: '/app/group/',
-        },
-        {
-          title: '167',
-          url: '/app/group/',
-        },
-      ],
-    },
-    {
-      title: 'Архивные Группы',
-      url: '/',
-      icon: BookUser,
-      isActive: false,
-      items: [
-        {
-          title: '186',
-          url: '/group/',
-        },
-        {
-          title: '185',
-          url: '/group/',
-        },
-        {
-          title: '187',
-          url: '/group/',
-        },
-      ],
-    },
-  ],
-};
-
 const mockCompanyData = {
-  shortName: 'Добавить компанию',
+  shortName: `Добавить компанию`,
 };
 
 export default function AppSidebar() {
-  const [user, setUser] = useState(null);
   const [company, setCompany] = useState(null);
+  const [groups, setGroups] = useState(null);
   const session = useSession();
   const { toast } = useToast();
 
+  const fetchCompanyData = useCallback(
+    async (companyId) => {
+      if (!companyId) {
+        setCompany(mockCompanyData);
+        return;
+      }
+
+      try {
+        const [companyRes, groupsRes] = await Promise.all([
+          fetch(`/api/company/${companyId}`).then((res) => res.json()),
+          fetch(`/api/group/${companyId}`).then((res) => res.json()),
+        ]);
+
+        setCompany(companyRes);
+        setGroups(groupsRes);
+      } catch (error) {
+        console.error('Ошибка загрузки данных:', error);
+        toast({
+          title: 'Ошибка',
+          description: 'Не удалось загрузить данные.',
+          status: 'error',
+        });
+      }
+    },
+    [toast],
+  );
+
   useEffect(() => {
     if (session.status === 'authenticated' && session.data?.user?.email) {
-      setUser(session.data.user);
-
-      if (session.data.user.companyId === null) {
-        setCompany(mockCompanyData);
-      } else {
-        fetch(`/api/company/${session.data.user.companyId}`)
-          .then((res) => res.json())
-          .then((data) => setCompany(data))
-          .catch((error) => {
-            console.error('Ошибка загрузки данных компании:', error);
-            toast({
-              title: 'Ошибка',
-              description: 'Не удалось загрузить данные компании.',
-              status: 'error',
-            });
-          });
-      }
+      fetchCompanyData(session.data.user.companyId);
     }
-  }, [session]);
+  }, [session, fetchCompanyData]);
+
+  const user = useMemo(() => session.data?.user || null, [session]);
 
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <SidebarCompanyInfo name={company ? company.shortName : null} />
+        <SidebarCompanyInfo name={company?.shortName || null} />
       </SidebarHeader>
       <SidebarSeparator className="my-4" />
       <SidebarContent>
-        <NavGroups groups={data.groups} />
+        <NavGroups groups={groups || []} />
         <SidebarSeparator className="my-4 mt-auto" />
         <NavAction />
       </SidebarContent>
       <SidebarSeparator className="my-4" />
       <SidebarFooter>
-        <NavUser user={user} companyName={company ? company.shortName : null} />
+        <NavUser user={user} companyName={company?.shortName || null} />
       </SidebarFooter>
     </Sidebar>
   );
