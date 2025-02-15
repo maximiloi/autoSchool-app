@@ -50,7 +50,7 @@ export default function AppSidebar() {
         });
       }
     },
-    [toast],
+    [session, toast],
   );
 
   useEffect(() => {
