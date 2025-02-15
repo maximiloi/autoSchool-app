@@ -30,10 +30,11 @@ export default function StudentForm() {
     if (status === 'authenticated') {
       async function fetchActiveGroups() {
         try {
-          const response = await fetch(`/api/group/${session.user.companyId}`);
+          const response = await fetch(`/api/group/`);
           if (!response.ok) throw new Error('Ошибка загрузки активных групп');
           const data = await response.json();
           const groups = data.filter((group) => group.isActive);
+
           setActiveGroups(groups);
         } catch (error) {
           console.error('Ошибка загрузки активных групп:', error);
