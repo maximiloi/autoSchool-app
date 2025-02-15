@@ -3,6 +3,17 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+export async function GET(req) {
+  try {
+    const groups = await prisma.group.findMany({});
+
+    return NextResponse.json(groups, { status: 200 });
+  } catch (error) {
+    console.error('Error fetching groups:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
 export async function POST(req) {
   try {
     const data = await req.json();

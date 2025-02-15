@@ -8,15 +8,16 @@ export async function GET(req, { params }) {
     const { id } = await params;
 
     if (!id) {
-      return NextResponse.json({ error: 'ID компании не указан' }, { status: 400 });
+      return NextResponse.json({ error: 'ID группы не указан' }, { status: 400 });
     }
 
-    const groups = await prisma.group.findMany({
+    const groups = await prisma.group.findUnique({
       where: {
-        companyId: id,
+        id,
       },
       include: {
         // company: true,
+        students: true,
         theoryTeachers: true,
         practiceTeachers: true,
       },
