@@ -42,10 +42,12 @@ model Company {
   phone                String
   email                String    @unique
   website              String?
+
   users                User[]
   teachers             Teacher[]
   cars                 Car[]
-  groups               Group[] 
+  groups               Group[]
+  students             Student[]
 }
 
 model Teacher {
@@ -98,4 +100,44 @@ model Group {
   practiceTeachers Teacher[] @relation(name: "PracticeTeachers")
 
   createdAt        DateTime  @default(now())
+
+  students          Student[]
+}
+
+model Student {
+  id                  String  @id @default(uuid())
+  lastName            String
+  firstName           String
+  middleName          String?
+  gender              String?  // 'male' или 'female'
+  phone               String
+  birthDate           DateTime
+  birthPlace          String?
+  registrationAddress String?
+  actualAddress       String?
+  documentType        String?  // 'passport' или 'license'
+  documentIssuer      String?
+  documentCode        String?
+  documentSeries      String?
+  documentNumber      String?
+  documentIssueDate   DateTime?
+  medicalSeries       String?
+  medicalNumber       String?
+  medicalIssueDate    DateTime?
+  medicalIssuer       String?
+  license             String?
+  licenseSeries       String?
+  licenseNumber       String?
+  region              String?
+  medicalRestriction  String?
+  allowedCategories   String?
+  trainingCost        Decimal
+  snils               String?
+
+  groupId             String
+  group               Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  companyId           String
+  company             Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  createdAt           DateTime @default(now())
 }
