@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/select';
 import { FormItem, FormControl, FormMessage, FormField } from '@/components/ui/form';
 
-export default function DropdownField({ name, control, options }) {
+export default function DropdownField({ name, control, options = {} }) {
   return (
     <FormField
       name={name}
@@ -21,11 +21,13 @@ export default function DropdownField({ name, control, options }) {
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              {Object.entries(options).map(([value, text]) => (
-                <SelectItem key={value} value={value}>
-                  {text}
-                </SelectItem>
-              ))}
+              {options && typeof options === 'object'
+                ? Object.entries(options).map(([value, text]) => (
+                    <SelectItem key={value} value={value}>
+                      {text}
+                    </SelectItem>
+                  ))
+                : null}
             </SelectContent>
           </Select>
           <FormMessage />
