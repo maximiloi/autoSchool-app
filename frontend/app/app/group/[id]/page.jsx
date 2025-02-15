@@ -1,3 +1,92 @@
-export default function Group() {
-  return <p>info Group</p>;
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { format } from 'date-fns';
+import { ru } from 'date-fns/locale';
+import { Separator } from '@/components/ui/separator';
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+
+export default function GroupPage({ params }) {
+  const { id } = useParams(params);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [group, setGroupData] = useState(null);
+
+  useEffect(() => {
+    async function fetchDataGroup() {
+      try {
+        const groupResponse = await fetch(`/api/group/${id}`);
+        if (!groupResponse.ok) throw new Error('Ошибка загрузки данных о группе');
+        const groupData = await groupResponse.json();
+
+        setGroupData(groupData);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchDataGroup();
+  }, [id]);
+
+  if (loading) return <p>Загрузка...</p>;
+  if (error) return <p>Ошибка: {error}</p>;
+
+  return (
+    <>
+      <div className="flex gap-8">
+        <h2 className="text-sm">
+          Группа № <span className="text-lg text-muted-foreground">{group.groupNumber}</span>
+        </h2>
+        <p className="text-sm">
+          Категория: <span className="text-lg text-muted-foreground">{group.category}</span>
+        </p>
+        <p className="text-sm">
+          Начало обучения:{' '}
+          <span className="text-lg text-muted-foreground">
+            {format(group.startTrainingDate, 'PPP', { locale: ru })}
+          </span>
+        </p>
+        <p className="text-sm">
+          Конец обучения:{' '}
+          <span className="text-lg text-muted-foreground">
+            {format(group.endTrainingDate, 'PPP', { locale: ru })}
+          </span>
+        </p>
+      </div>
+      <Separator className="my-4" />
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[180px]">ФИО</TableHead>
+            <TableHead>Дата рождения</TableHead>
+            <TableHead>Договор</TableHead>
+            <TableHead>Вождение</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {group.students.map((student) => (
+            <TableRow key={student.id}>
+              <TableCell className="font-medium">
+                {student.lastName} {student.firstName}{' '}
+                {student.middleName ? `${student.middleName.charAt(0)}.` : ''}
+              </TableCell>
+              <TableCell>{format(student.birthDate, 'dd/MM/yyyy', { locale: ru })}</TableCell>
+              <TableCell>{'student.paymentMethod'}</TableCell>
+              <TableCell>{'student.paymentMethod'}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </>
+  );
 }
