@@ -78,7 +78,7 @@ export default function CompanyForm() {
           form.reset(companyData);
         }
       } catch (error) {
-        console.error('Ошибка при загрузке данных компании', error);
+        console.error('Ошибка при загрузке данных компании', error.message);
         toast({
           duration: 2000,
           variant: 'destructive',

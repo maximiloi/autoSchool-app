@@ -36,11 +36,10 @@ export default function AppSidebar() {
       try {
         const [companyRes, groupsRes] = await Promise.all([
           fetch(`/api/company/${companyId}`).then((res) => res.json()),
-          fetch(`/api/group/${companyId}`).then((res) => res.json()),
         ]);
 
         setCompany(companyRes);
-        setGroups(groupsRes);
+        setGroups(companyRes.groups);
       } catch (error) {
         console.error('Ошибка загрузки данных:', error);
         toast({

@@ -13,6 +13,9 @@ export async function GET(req, { params }) {
 
     const company = await prisma.company.findUnique({
       where: { id },
+      include: {
+        groups: true,
+      },
     });
 
     if (!company) {
