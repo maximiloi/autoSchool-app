@@ -6,9 +6,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { UserRoundPlus, BookPlus } from 'lucide-react';
+import { UserRoundPlus, BookPlus, BookCopy, LifeBuoy } from 'lucide-react';
 
-// This is sample data.
 const data = {
   navAction: [
     {
@@ -20,6 +19,16 @@ const data = {
       title: 'Добавить группу',
       url: '/app/create/group/',
       icon: BookPlus,
+    },
+    {
+      title: 'Справочники',
+      url: '/app/create/group/',
+      icon: BookCopy,
+    },
+    {
+      title: 'Поддержка',
+      url: ' https://t.me/maximiloi',
+      icon: LifeBuoy,
     },
   ],
 };
