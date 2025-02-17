@@ -43,8 +43,6 @@ export const formSchema = z.object({
   // .regex(/^(\d{2})\.(\d{2})\.(\d{4})$/, 'Введите корректную дату в формате ДД.ММ.ГГГГ'),
   medicalIssuer: z.string().optional(),
   license: z.string().optional(),
-  licenseSeries: z.string().optional(),
-  licenseNumber: z.string().optional(),
   region: z.string().optional(),
   medicalRestriction: z.string().optional(),
   allowedCategories: z.string().optional(),

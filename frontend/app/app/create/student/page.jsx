@@ -70,6 +70,8 @@ export default function StudentForm() {
           ...values,
           companyId: session.user.companyId,
           birthDate: dateParse(values.birthDate),
+          documentIssueDate: dateParse(values.documentIssueDate),
+          medicalIssueDate: dateParse(values.medicalIssueDate),
         };
 
         const response = await fetch('/api/student', {
@@ -159,7 +161,7 @@ export default function StudentForm() {
           <InputField name="documentCode" label="Код" control={form.control} />
           <InputField
             name="documentIssueDate"
-            label="Дата выдачи (ДД.ММ.ГГГГ)"
+            label="Дата выдачи (ДД/ММ/ГГГГ)"
             control={form.control}
           />
         </div>
@@ -170,7 +172,7 @@ export default function StudentForm() {
           <InputField name="medicalNumber" label="Номер" control={form.control} />
           <InputField
             name="medicalIssueDate"
-            label="Дата выдачи (ДД.ММ.ГГГГ)"
+            label="Дата выдачи (ДД/ММ/ГГГГ)"
             control={form.control}
           />
         </div>

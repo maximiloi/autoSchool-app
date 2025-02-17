@@ -14,6 +14,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { CarFront, NotepadText, Pencil } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function GroupPage({ params }) {
   const { id } = useParams(params);
@@ -67,22 +69,38 @@ export default function GroupPage({ params }) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[180px]">ФИО</TableHead>
-            <TableHead>Дата рождения</TableHead>
-            <TableHead>Договор</TableHead>
+            <TableHead className="w-[73px]"></TableHead>
+            <TableHead className="w-[20px]">#</TableHead>
+            <TableHead className="w-[200px]">ФИО</TableHead>
+            <TableHead className="w-[145px]">Дата рождения</TableHead>
+            <TableHead className="w-[80px]">Договор</TableHead>
             <TableHead>Вождение</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {group.students.map((student) => (
+          {group.students.map((student, index) => (
             <TableRow key={student.id}>
+              <TableCell>
+                <Button variant="ghost" size="icon">
+                  <Pencil />
+                </Button>
+              </TableCell>
+              <TableCell>{index + 1}</TableCell>
               <TableCell className="font-medium">
                 {student.lastName} {student.firstName}{' '}
                 {student.middleName ? `${student.middleName.charAt(0)}.` : ''}
               </TableCell>
               <TableCell>{format(student.birthDate, 'dd/MM/yyyy', { locale: ru })}</TableCell>
-              <TableCell>{'student.paymentMethod'}</TableCell>
-              <TableCell>{'student.paymentMethod'}</TableCell>
+              <TableCell>
+                <Button variant="outline" size="icon">
+                  <NotepadText />
+                </Button>
+              </TableCell>
+              <TableCell>
+                <Button variant="outline" size="icon">
+                  <CarFront />
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
