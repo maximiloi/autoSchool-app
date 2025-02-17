@@ -145,7 +145,7 @@ export default function StudentForm() {
         <InputField name="registrationAddress" label="Адрес регистрации" control={form.control} />
         <InputField name="actualAddress" label="Фактический адрес" control={form.control} />
 
-        <h3 className="text-md font-semibold">Документ удостоверяющий личность</h3>
+        <h3 className="text-sm font-semibold">Документ удостоверяющий личность</h3>
         <div className="grid grid-cols-3 gap-4">
           <DropdownField
             name="documentType"
@@ -166,7 +166,7 @@ export default function StudentForm() {
           />
         </div>
 
-        <h3 className="text-md font-semibold">Медицинская справка</h3>
+        <h3 className="text-sm font-semibold">Медицинская справка</h3>
         <div className="grid grid-cols-3 gap-4">
           <InputField name="medicalSeries" label="Серия" control={form.control} />
           <InputField name="medicalNumber" label="Номер" control={form.control} />
@@ -178,14 +178,14 @@ export default function StudentForm() {
         </div>
         <InputField name="medicalIssuer" label="Кем выдана" control={form.control} />
 
-        <h3 className="text-md font-semibold">Лицензия</h3>
+        <h3 className="text-sm font-semibold">Лицензия</h3>
         <div className="grid grid-cols-3 gap-4">
           <InputField name="medicalSeries" label="Серия" control={form.control} />
           <InputField name="license" label="Номер" control={form.control} />
           <InputField name="region" label="Регион" control={form.control} />
         </div>
 
-        <h3 className="text-md font-semibold">Дополнительная информация</h3>
+        <h3 className="text-sm font-semibold">Дополнительная информация</h3>
         <div className="grid grid-cols-2 gap-4">
           <InputField name="medicalRestriction" label="Мед. ограничение" control={form.control} />
           <InputField
