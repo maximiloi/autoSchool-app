@@ -22,7 +22,6 @@ const mockCompanyData = {
 
 export default function AppSidebar() {
   const [company, setCompany] = useState(null);
-  const [groups, setGroups] = useState(null);
   const session = useSession();
   const { toast } = useToast();
 
@@ -34,12 +33,9 @@ export default function AppSidebar() {
       }
 
       try {
-        const [companyRes, groupsRes] = await Promise.all([
-          fetch(`/api/company/${companyId}`).then((res) => res.json()),
-        ]);
+        const companyRes = await fetch(`/api/company/${companyId}`).then((res) => res.json());
 
         setCompany(companyRes);
-        setGroups(companyRes.groups);
       } catch (error) {
         console.error('Ошибка загрузки данных:', error);
         toast({
@@ -67,7 +63,7 @@ export default function AppSidebar() {
       </SidebarHeader>
       <SidebarSeparator className="my-4" />
       <SidebarContent>
-        <NavGroups groups={groups || []} />
+        <NavGroups groups={company?.groups || []} />
         <SidebarSeparator className="my-4 mt-auto" />
         <NavAction />
       </SidebarContent>
