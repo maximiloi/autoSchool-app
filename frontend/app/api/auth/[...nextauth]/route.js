@@ -16,7 +16,7 @@ export const authOptions = {
       async authorize(credentials) {
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
-          include: { company: true }, // Загружаем данные о компании
+          include: { company: true },
         });
 
         if (!user) throw new Error('Пользователь не найден');
@@ -28,7 +28,7 @@ export const authOptions = {
           id: user.id,
           email: user.email,
           role: user.role,
-          companyId: user.company?.id || null, // Добавляем companyId
+          companyId: user.company?.id || null,
         };
       },
     }),
@@ -42,7 +42,7 @@ export const authOptions = {
       if (user) {
         token.id = user.id;
         token.role = user.role;
-        token.companyId = user.companyId; // Сохраняем companyId в токене
+        token.companyId = user.companyId;
       }
       return token;
     },
