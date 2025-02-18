@@ -49,7 +49,7 @@ export const authOptions = {
     async session({ session, token }) {
       session.user.id = token.id;
       session.user.role = token.role;
-      session.user.companyId = token.companyId; // Добавляем companyId в сессию
+      session.user.companyId = token.companyId;
       return session;
     },
   },
