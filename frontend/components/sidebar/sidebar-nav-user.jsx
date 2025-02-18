@@ -1,5 +1,5 @@
-'use client';
-
+import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { ChevronsUpDown, LogOut } from 'lucide-react';
 import {
   DropdownMenu,
@@ -15,8 +15,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 
 export default function NavUser({ user, companyName }) {
   const { isMobile } = useSidebar();

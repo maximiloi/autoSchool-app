@@ -1,5 +1,5 @@
-import { Car } from 'lucide-react';
 import Link from 'next/link';
+import { Car } from 'lucide-react';
 
 export default function SidebarCompanyInfo({ name }) {
   return (
