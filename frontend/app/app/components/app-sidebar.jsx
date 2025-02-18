@@ -16,10 +16,6 @@ import NavGroups from './sidebar-nav-groups';
 import NavAction from './sidebar-nav-action';
 import NavUser from './sidebar-nav-user';
 
-const mockCompanyData = {
-  shortName: `Добавить компанию`,
-};
-
 export default function AppSidebar() {
   const [company, setCompany] = useState(null);
   const session = useSession();
@@ -27,11 +23,6 @@ export default function AppSidebar() {
 
   const fetchCompanyData = useCallback(
     async (companyId) => {
-      if (!companyId) {
-        setCompany(mockCompanyData);
-        return;
-      }
-
       try {
         const companyRes = await fetch(`/api/company/${companyId}`).then((res) => res.json());
 
@@ -59,7 +50,7 @@ export default function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <SidebarCompanyInfo name={company?.shortName || null} />
+        <SidebarCompanyInfo name={company?.shortName || 'Добавить компанию'} />
       </SidebarHeader>
       <SidebarSeparator className="my-4" />
       <SidebarContent>
