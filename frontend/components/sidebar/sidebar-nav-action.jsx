@@ -22,7 +22,7 @@ const data = {
     },
     {
       title: 'Справочники',
-      url: '/dictionaries/',
+      url: '/app/dictionaries/',
       icon: BookCopy,
     },
     {
