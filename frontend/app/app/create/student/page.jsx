@@ -17,37 +17,37 @@ export default function StudentForm() {
   const [activeGroups, setActiveGroups] = useState(null);
   const { data: session, status } = useSession();
   const { toast } = useToast();
-
-  const { reset, ...form } = useForm({
+  const { watch, reset, ...form } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       gender: 'male',
       documentType: 'passport',
     },
   });
+  const valuesForm = watch();
 
   useEffect(() => {
-    if (status === 'authenticated') {
-      async function fetchActiveGroups() {
-        try {
-          const response = await fetch(`/api/group/`);
-          if (!response.ok) throw new Error('Ошибка загрузки активных групп');
-          const data = await response.json();
-          const groups = data.filter((group) => group.isActive);
+    if (status !== 'authenticated') return;
 
-          setActiveGroups(groups);
-        } catch (error) {
-          console.error('Ошибка загрузки активных групп:', error.message);
-          toast({
-            title: 'Ошибка',
-            description: 'Не удалось загрузить данные активных групп.',
-            status: 'error',
-          });
-        }
+    async function fetchActiveGroups() {
+      try {
+        const response = await fetch(`/api/group/`);
+        if (!response.ok) throw new Error('Ошибка загрузки активных групп');
+        const data = await response.json();
+        const groups = data.filter((group) => group.isActive);
+
+        setActiveGroups(groups);
+      } catch (error) {
+        console.error('Ошибка загрузки активных групп:', error.message);
+        toast({
+          title: 'Ошибка',
+          description: `Не удалось загрузить данные активных групп. ${error.message}`,
+          status: 'error',
+        });
       }
-
-      fetchActiveGroups();
     }
+
+    fetchActiveGroups();
   }, [session]);
 
   function creatingActiveGroupObject(data) {
@@ -61,44 +61,48 @@ export default function StudentForm() {
   }
 
   async function onSubmit(values) {
-    if (status === 'authenticated') {
-      setIsLoading(true);
-      try {
-        const requestData = {
-          ...values,
-          companyId: session.user.companyId,
-        };
+    if (status !== 'authenticated') return;
 
-        const response = await fetch('/api/student', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(requestData),
+    setIsLoading(true);
+    try {
+      const filledFieldsCount = Object.values(valuesForm).filter(Boolean).length;
+      const percentageFilled = Math.round((filledFieldsCount / Object.keys(values).length) * 100);
+
+      const requestData = {
+        ...values,
+        companyId: session.user.companyId,
+        filledInData: percentageFilled,
+      };
+
+      const response = await fetch('/api/student', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      if (response.ok) {
+        toast({
+          duration: 2000,
+          description: 'Ученик успешно добавлен в БД',
         });
-
-        if (response.ok) {
-          toast({
-            duration: 2000,
-            description: 'Ученик успешно добавлен в БД',
-          });
-          reset();
-        } else {
-          toast({
-            duration: 2000,
-            variant: 'destructive',
-            description: 'Ошибка при создании ученика',
-          });
-        }
-      } catch (err) {
+        reset();
+      } else {
         toast({
           duration: 2000,
           variant: 'destructive',
-          description: `Ошибка: ${err.message}`,
+          description: 'Ошибка при создании ученика',
         });
-      } finally {
-        setIsLoading(false);
       }
+    } catch (err) {
+      toast({
+        duration: 2000,
+        variant: 'destructive',
+        description: `Ошибка: ${err.message}`,
+      });
+    } finally {
+      setIsLoading(false);
     }
   }
 
