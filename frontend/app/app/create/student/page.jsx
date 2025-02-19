@@ -9,8 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import InputField from '@/components/ui/InputField';
 import DropdownField from '@/components/ui/DropdownField';
+import DatePickerField from '@/components/ui/DatePickerField';
 import { formSchema } from './formSchema';
-import dateParse from '@/lib/dateParse';
 
 export default function StudentForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +37,7 @@ export default function StudentForm() {
 
           setActiveGroups(groups);
         } catch (error) {
-          console.error('Ошибка загрузки активных групп:', error);
+          console.error('Ошибка загрузки активных групп:', error.message);
           toast({
             title: 'Ошибка',
             description: 'Не удалось загрузить данные активных групп.',
@@ -61,17 +61,12 @@ export default function StudentForm() {
   }
 
   async function onSubmit(values) {
-    console.log(values);
-
     if (status === 'authenticated') {
       setIsLoading(true);
       try {
         const requestData = {
           ...values,
           companyId: session.user.companyId,
-          birthDate: dateParse(values.birthDate),
-          documentIssueDate: dateParse(values.documentIssueDate),
-          medicalIssueDate: dateParse(values.medicalIssueDate),
         };
 
         const response = await fetch('/api/student', {
@@ -120,7 +115,7 @@ export default function StudentForm() {
               options={creatingActiveGroupObject(activeGroups)}
             />
           ) : (
-            <p>Загрузка...</p>
+            <span>Загрузка...</span>
           )}
         </div>
 
@@ -137,7 +132,7 @@ export default function StudentForm() {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <InputField name="birthDate" label="Дата рождения (ДД/ММ/ГГГГ)" control={form.control} />
+          <DatePickerField name="birthDate" label="Дата рождения" control={form.control} />
           <InputField name="snils" label="СНИЛС" control={form.control} />
         </div>
 
@@ -159,9 +154,9 @@ export default function StudentForm() {
         <div className="grid grid-cols-[2fr_1fr_1fr] gap-4">
           <InputField name="documentIssuer" label="Кем выдан" control={form.control} />
           <InputField name="documentCode" label="Код" control={form.control} />
-          <InputField
+          <DatePickerField
             name="documentIssueDate"
-            label="Дата выдачи (ДД/ММ/ГГГГ)"
+            label="Дата выдачи документа"
             control={form.control}
           />
         </div>
@@ -170,9 +165,9 @@ export default function StudentForm() {
         <div className="grid grid-cols-3 gap-4">
           <InputField name="medicalSeries" label="Серия" control={form.control} />
           <InputField name="medicalNumber" label="Номер" control={form.control} />
-          <InputField
+          <DatePickerField
             name="medicalIssueDate"
-            label="Дата выдачи (ДД/ММ/ГГГГ)"
+            label="Дата выдачи справки"
             control={form.control}
           />
         </div>
