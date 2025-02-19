@@ -1,12 +1,38 @@
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../api/auth/[...nextauth]/route';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { Separator } from '@radix-ui/react-separator';
-import AppSidebar from '@/app/app/components/app-sidebar';
-import AppBreadcrumb from '@/app/app/components/app-breadcrumb';
+import { Separator } from '@/components/ui/separator';
 
-export const metadata = {
-  title: 'ООО "КАО" | АвтошколаApp',
-  description: 'Приложение для автошколы',
-};
+import AppSidebar from '@/components/sidebar/sidebar';
+
+export async function generateMetadata() {
+  const session = await getServerSession(authOptions);
+  const companyId = session?.user?.companyId;
+
+  let companyName = '! Необходимо добавить данные о Вашей компании';
+
+  if (companyId) {
+    try {
+      const response = await fetch(`${process.env.NEXTAUTH_URL}/api/company/${companyId}`, {
+        cache: 'no-store',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Ошибка HTTP: ${response.status}`);
+      }
+
+      const company = await response.json();
+      companyName = company?.shortName || companyName;
+    } catch (error) {
+      console.error('Ошибка загрузки данных о компании:', error);
+    }
+  }
+
+  return {
+    title: `${companyName} | АвтошколаApp`,
+    description: `Рабочая панель компании ${companyName} | АвтошколаApp`,
+  };
+}
 
 export default function AppLayout({ children }) {
   return (
@@ -18,7 +44,6 @@ export default function AppLayout({ children }) {
             <div className="flex items-center gap-2 px-4">
               <SidebarTrigger className="-ml-1" />
               <Separator orientation="vertical" className="mr-2 h-4" />
-              <AppBreadcrumb />
             </div>
           </header>
           <section className="px-4 py-4">{children}</section>
