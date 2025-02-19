@@ -88,12 +88,12 @@ model Car {
 
 model Group {
   id                String   @id @default(uuid())
-  groupNumber       String
+  groupNumber       String   @unique
   category          String
   startTrainingDate DateTime
   endTrainingDate   DateTime
   isActive          Boolean  @default(true)
-  companyId        String
+  companyId         String
   company          Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   theoryTeachers   Teacher[] @relation(name: "TheoryTeachers")
@@ -126,13 +126,13 @@ model Student {
   medicalIssueDate    DateTime?
   medicalIssuer       String?
   license             String?
-  licenseSeries       String?
-  licenseNumber       String?
   region              String?
   medicalRestriction  String?
   allowedCategories   String?
   trainingCost        Decimal
   snils               String?
+
+  filledInData       Int @default(0) 
 
   groupId             String
   group               Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
