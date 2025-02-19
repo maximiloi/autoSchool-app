@@ -1,3 +1,16 @@
-export default function Group() {
-  return <p>info Group</p>;
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import FormCreationTrainingGroup from './components/creation-training-group';
+
+export default function CreationTrainingGroup() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Создание группы</CardTitle>
+        <CardDescription>Заполните форму для добавления новой группы.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <FormCreationTrainingGroup />
+      </CardContent>
+    </Card>
+  );
 }

@@ -12,12 +12,12 @@ const data = {
   navAction: [
     {
       title: 'Добавить ученика',
-      url: '/app/create/student/',
+      url: '/app/student/',
       icon: UserRoundPlus,
     },
     {
       title: 'Добавить группу',
-      url: '/app/create/group/',
+      url: '/app/group/',
       icon: BookPlus,
     },
     {
