@@ -189,7 +189,12 @@ export default function StudentForm() {
             control={form.control}
           />
           <InputField name="trainingCost" label="Стоимость обучения" control={form.control} />
-          <InputField name="phone" label="Телефон" control={form.control} />
+          <InputField
+            name="phone"
+            label="Телефон"
+            control={form.control}
+            mask="+{7}(000)000-00-00"
+          />
         </div>
 
         <div className="flex gap-4">
