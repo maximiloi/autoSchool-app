@@ -1,6 +1,7 @@
+import Link from 'next/link';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
-
+import { CarFront, FileUser, NotepadText } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -9,7 +10,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { CarFront, FileUser, NotepadText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function TablePage({ group }) {
@@ -25,12 +25,15 @@ export default function TablePage({ group }) {
           <TableHead>Вождение</TableHead>
         </TableRow>
       </TableHeader>
+
       <TableBody>
         {group.students.map((student, index) => (
           <TableRow key={student.id}>
             <TableCell>
               <Button variant="ghost" size="icon">
-                <FileUser />
+                <Link href={`/app/student/${student.id}`}>
+                  <FileUser />
+                </Link>
               </Button>
             </TableCell>
             <TableCell>{index + 1}</TableCell>
