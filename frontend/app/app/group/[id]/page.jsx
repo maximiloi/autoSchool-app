@@ -9,8 +9,8 @@ import { Separator } from '@/components/ui/separator';
 import TablePage from './components/TablePage';
 import FooterPage from './components/FooterPage';
 
-export default function GroupPage({ params }) {
-  const { id } = useParams(params);
+export default function GroupPage() {
+  const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [group, setGroupData] = useState(null);
