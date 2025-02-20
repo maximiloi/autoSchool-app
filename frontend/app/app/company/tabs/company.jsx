@@ -12,7 +12,7 @@ import { CompanyFormSchema } from './company-formSchema';
 
 export default function CompanyForm() {
   const { data: session } = useSession();
-  const form = useForm({
+  const { reset, ...form } = useForm({
     resolver: zodResolver(CompanyFormSchema),
     defaultValues: {},
   });
@@ -24,7 +24,7 @@ export default function CompanyForm() {
         const response = await fetch(`/api/company/${session.user.companyId}`);
         if (response.ok) {
           const companyData = await response.json();
-          form.reset(companyData);
+          reset(companyData);
         }
       } catch (error) {
         console.error('Ошибка при загрузке данных компании', error.message);
