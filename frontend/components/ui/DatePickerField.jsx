@@ -38,7 +38,7 @@ export default function DatePickerField({ name, label, control }) {
                 toYear={2030}
                 locale={ru}
                 mode="single"
-                selected={field.value}
+                selected={field.value || null}
                 onSelect={field.onChange}
                 defaultMonth={name === 'birthDate' ? startMonth : new Date()}
                 startMonth={name === 'birthDate' ? startMonth : new Date()}

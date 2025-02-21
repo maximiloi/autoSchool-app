@@ -14,7 +14,7 @@ export default function DropdownField({ name, control, options = {} }) {
       control={control}
       render={({ field }) => (
         <FormItem>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Select onValueChange={field.onChange} value={field.value || ''}>
             <FormControl>
               <SelectTrigger>
                 <SelectValue placeholder="Выберите" />
