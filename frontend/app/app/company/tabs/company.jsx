@@ -14,7 +14,30 @@ export default function CompanyForm() {
   const { data: session } = useSession();
   const { reset, ...form } = useForm({
     resolver: zodResolver(CompanyFormSchema),
-    defaultValues: {},
+    defaultValues: {
+      companyName: '',
+      shortName: '',
+      license: '',
+      inn: '',
+      kpp: '',
+      ogrn: '',
+      legalAddress: '',
+      actualAddress: '',
+      region: '',
+      bank: '',
+      account: '',
+      bik: '',
+      correspondentAccount: '',
+      directorSurname: '',
+      directorName: '',
+      directorPatronymic: '',
+      accountantSurname: '',
+      accountantName: '',
+      accountantPatronymic: '',
+      phone: '',
+      email: '',
+      website: '',
+    },
   });
 
   useEffect(() => {
@@ -36,7 +59,7 @@ export default function CompanyForm() {
       }
     }
     fetchCompany();
-  }, [session, form]);
+  }, [session]);
 
   async function onSubmit(values) {
     try {
