@@ -6,6 +6,7 @@ import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover
 import { CalendarCustom } from '@/components/ui/calendarCustom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import learningStartDate from '@/lib/learningStartDate';
 
 export default function DatePickerField({ name, label, control }) {
   const currentDate = new Date();
@@ -41,7 +42,9 @@ export default function DatePickerField({ name, label, control }) {
                 onSelect={field.onChange}
                 defaultMonth={name === 'birthDate' ? startMonth : new Date()}
                 startMonth={name === 'birthDate' ? startMonth : new Date()}
-                disabled={(date) => date > new Date()}
+                disabled={(date) =>
+                  name === 'birthDate' ? date > learningStartDate() : date > new Date()
+                }
                 initialFocus
               />
             </PopoverContent>
