@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import StudentForm from '../components/StudentForm';
 import { toast } from '@/hooks/use-toast';
+import transformedNullAndStringDate from '@/lib/transformedNullAndStringDate';
+import StudentForm from '../components/StudentForm';
 
 export default function EditStudentPage() {
   const { id } = useParams();
@@ -22,7 +23,7 @@ export default function EditStudentPage() {
 
         if (response.ok) {
           const data = await response.json();
-          if (isMounted) setStudent(data);
+          if (isMounted) setStudent(transformedNullAndStringDate(data));
         } else {
           throw new Error('Ошибка загрузки данных');
         }
