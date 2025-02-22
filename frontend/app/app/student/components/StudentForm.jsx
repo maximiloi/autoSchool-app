@@ -111,7 +111,7 @@ export default function StudentForm({ student }) {
           description: student?.id ? 'Данные ученика обновлены' : 'Ученик успешно добавлен',
         });
 
-        reset(updatedStudent);
+        reset(student ? updatedStudent : '');
       } else {
         toast({
           duration: 2000,
