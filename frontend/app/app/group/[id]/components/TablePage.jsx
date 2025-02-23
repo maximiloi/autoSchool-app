@@ -14,7 +14,16 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import infoColor from '@/lib/infoColor';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+
 import StudentDeleteModalDialog from './StudentDeleteModalDialog';
 
 export default function TablePage({ group }) {
@@ -90,13 +99,23 @@ export default function TablePage({ group }) {
                 {format(new Date(student.birthDate), 'dd/MM/yyyy', { locale: ru })}
               </TableCell>
               <TableCell>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className={`${infoColor(student.filledInData)}`}
-                >
-                  <NotepadText />
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="icon">
+                      <NotepadText />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                    <DropdownMenuLabel>Документы</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem>
+                        <span>Заявка</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </TableCell>
               <TableCell>
                 <Button variant="outline" size="icon">
