@@ -62,8 +62,8 @@ export default function FormCreationTrainingGroup() {
     defaultValues: {
       groupNumber: '',
       category: 'B',
-      startTrainingDate: null,
-      endTrainingDate: null,
+      startTrainingDate: undefined,
+      endTrainingDate: undefined,
       theoryTeachers: [],
       practiceTeachers: [],
     },
